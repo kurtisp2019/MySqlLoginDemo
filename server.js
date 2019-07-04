@@ -33,6 +33,10 @@ connection.connect(_err => {
     console.log("connected as user id: " + connection.threadId);
 });
 
+app.get("/", (_req, _res) => { 
+    _res.render("index");
+});
+
 var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine" , "handlebars");
