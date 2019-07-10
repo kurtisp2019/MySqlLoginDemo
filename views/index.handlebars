@@ -1,59 +1,93 @@
-{{#if loggedin}}
 <p>Register</p>
 <p>email:</p>
-<input id= "reg-email" style= "width: 100px" type = "text"/> 
+<input id="reg-email" style="width: 100px" type="text" />
 <p>password:</p>
-<input id= "reg-password" style= "width: 100px" type = "text"/> 
+<input id="reg-password" style="width: 100px" type="text" />
 <button id="register">register</button>
-{{/if}}
 
 <p>login</p>
 <p>email:</p>
-<input id= "log-email" style= "width: 100px" type = "text"/> 
+<input id="log-email" style="width: 100px" type="text" />
 <p>password:</p>
-<input id= "log-password" style= "width: 100px" type = "text"/> 
+<input id="log-password" style="width: 100px" type="text" />
 <button id="login">login</button>
 <button id="logout">logout</button>
 
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
+<p id="status">Welcome to the site</p>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script>
 
-  $("#register").on("click", _e=>{
-      
-      _e.preventDefault();
-     $.post({
-         url: "/register",
-         data: {
-             email: $("#reg-email").val(),
-             firstName: "test",
-             lastName: "lasttName",
-             password: $("#reg-password").val()
-         }
-     }).catch(_err => alert(_err));
-  });
+    // TODO: check to see if someone is logged in
 
-   $("#login").on("click", _e=>{
-      
-      _e.preventDefault();
-     $.post({
-         url: "/login",
-         data: {
-             email: $("#log-email").val(),
-             firstName: "test",
-             lastName: "lasttName",
-             password: $("#log-password").val()
-         }
-     }).catch(_err => alert(_err));
-  });
-     $("#logout").on("click", _e=>{
-      
-      _e.preventDefault();
-     $.post({
-         url: "/logout"
-     }).catch(_err => alert(_err));
-  });
+    $("#register").on("click", _e => {
+
+        _e.preventDefault();
+        $.ajax({
+            url: "/register",
+            type: "POST",
+            data: {
+                email: $("#reg-email").val(),
+                firstName: "test",
+                lastName: "lasttName",
+                password: $("#reg-password").val()
+            },
+            success: function (_data) {
+                if(_data){
+                    //location.href = "loggedin";
+                    //$("#status").text("You are logged in");
+                }
+                else{
+
+                }
+            }}).done(() =>{
+                //console.log("here");
+            });
+    });
+
+    $("#login").on("click", _e => {
+
+        _e.preventDefault();
+       
+         $.ajax({
+            url: "/login",
+            type: "POST",
+            data: {
+                email: $("#log-email").val(),
+                firstName: "test",
+                lastName: "lasttName",
+                password: $("#log-password").val()
+            },
+            success: function (_loggedin) {
+                if(_loggedin){
+                    //location.href = "loggedin";
+                    $("#status").text("You are logged in");
+                }
+                else{
+
+                }
+            }}).done(() =>{
+                //console.log("here");
+            });
+    });
+
+    $("#logout").on("click", _e => {
+
+        _e.preventDefault();
+        $.ajax({
+            url: "/logout",
+            type: "POST",
+            success: function (_success) {
+                if(_success){
+                    //location.href = "loggedin";
+                    $("#status").text("You are logged out");
+                }
+                else{
+
+                }
+            }}).done(() =>{
+                //console.log("here");
+            });
+    });
 </script>
-
